@@ -77,6 +77,7 @@ inputs:
   multianno_file: {type: 'File', doc: "ANNOVAR multianno file"}
   output_colnames: {type: 'File', doc: "File with column name information."}
   output_basename: {type: 'string?', default: "out", doc: "String to use as the basename for stored outputs."}
+  sample_id: {type: 'string', doc: "Input sample bioassay id."}
   selected_clinvar_submissions: {type: 'File?', doc: "ClinVar variant file with conflicts resolved. If not provided, this file will
       be generated in the workflow"}
   variant_summary_file: {type: 'File?', doc: "ClinVar variant summary file"}
@@ -127,6 +128,7 @@ steps:
         source: [selected_clinvar_submissions, select_clinvar_subs/clinvar_submissions]
         pickValue: first_non_null
       output_basename: output_basename
+      sample_id: sample_id
       cpu: annotate_cpu
       ram: annotate_ram
     out: [annotation_report]
@@ -144,6 +146,7 @@ steps:
         source: [selected_clinvar_submissions, select_clinvar_subs/clinvar_submissions]
         pickValue: first_non_null
       output_basename: output_basename
+      sample_id: sample_id
       cpu: annotate_cpu
       ram: annotate_ram
     out: [annotation_report]

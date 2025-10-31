@@ -10,7 +10,7 @@ requirements:
     ramMin: $(inputs.ram * 1000)
     coresMin: $(inputs.cpu)
   - class: DockerRequirement
-    dockerPull: 'pgc-images.sbgenomics.com/diskin-lab/autogvp:v1.0.3'
+    dockerPull: 'pgc-images.sbgenomics.com/diskin-lab/autogvp:v1.0.4'
 
 baseCommand: []
 arguments:
@@ -27,6 +27,7 @@ inputs:
   intervar_file: { type: 'File', inputBinding: { position: 2, prefix: "--intervar" }, doc: "input intervar file" }
   variant_summary: { type: 'File', inputBinding: { position: 2, prefix: "--variant_summary" }, doc: "variant_summary file (format: variant_summary_2023-02.txt)" }
   output_basename: { type: 'string?', default: "test", inputBinding: { position: 2, prefix: "--output" }, doc: "String to use as base for output filenames" }
+  sample_id: {type: 'string', inputBinding: { position: 2, prefix: "--sample_id" }, doc: "Input sample bioassay id."}
   cpu: { type: 'int?', default: 1, doc: "CPUs to allocate to this task" }
   ram: { type: 'int?', default: 2, doc: "GB of RAM to allocate to this task" }
 outputs:
