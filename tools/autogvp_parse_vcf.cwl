@@ -10,7 +10,7 @@ requirements:
     ramMin: $(inputs.ram * 1000)
     coresMin: $(inputs.cpu)
   - class: DockerRequirement
-    dockerPull: 'pgc-images.sbgenomics.com/diskin-lab/autogvp:v1.0.5'
+    dockerPull: 'pgc-images.sbgenomics.com/diskin-lab/autogvp:v1.0.6'
   - class: InitialWorkDirRequirement
     listing:
       - $(inputs.vcf_file)
