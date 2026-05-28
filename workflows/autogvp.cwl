@@ -24,8 +24,8 @@ doc: |
   ```yaml
   vcf_file: Input VCF file. Can be either VEP-annotated VCF file or or VEP- and ClinVar-annotated VCF file
   filter_criteria: Any additional VCF filtering criteria
-  intevar_file: InterVar results file
-  autopsv1_file: AutoPVS1 results file
+  intervar_file: InterVar results file
+  autopvs1_file: AutoPVS1 results file
   multianno_file: ANNOVAR multianno file
   output_colnames: File with column name information
   output_basename: String to use as the basename for stored outputs
@@ -37,9 +37,9 @@ doc: |
   ```
 
   The following files can be obtained from the [AutoGVP GitHub data directory](https://github.com/diskin-lab-chop/AutoGVP/tree/main/data):
-  - `autopsv1_file`
+  - `autopvs1_file`
   - `concept_ids`
-  - `intevar_file`
+  - `intervar_file`
   - `multianno_file`
   - `output_colnames`
 
@@ -66,8 +66,8 @@ requirements:
 inputs:
   vcf_file: {type: 'File', doc: "Input VCF file. Can be either VEP-annotated VCF file or or VEP- and ClinVar-annotated VCF file"}
   filter_criteria: {type: 'string[]?', doc: "Any additional VCF filtering criteria"}
-  intevar_file: {type: 'File', doc: "InterVar results file"}
-  autopsv1_file: {type: 'File', doc: "AutoPVS1 results file"}
+  intervar_file: {type: 'File', doc: "InterVar results file"}
+  autopvs1_file: {type: 'File', doc: "AutoPVS1 results file"}
   multianno_file: {type: 'File', doc: "ANNOVAR multianno file"}
   output_colnames: {type: 'File', doc: "File with column name information."}
   output_basename: {type: 'string?', default: "out", doc: "String to use as the basename for stored outputs."}
@@ -103,11 +103,11 @@ steps:
     in:
       vcf_file: vcf_file
       multianno_file: multianno_file
-      autopvs1_file: autopsv1_file
-      intervar_file: intevar_file
+      autopvs1_file: autopvs1_file
+      intervar_file: intervar_file
       output_basename: output_basename
       filter_criteria: filter_criteria
-    out: [filtered_vcf, filtered_multianno, filtered_autopsv, filtered_intervar]
+    out: [filtered_vcf, filtered_multianno, filtered_autopvs1, filtered_intervar]
   annotate:
     run: ../tools/autogvp_annotate_cavatica.cwl
     in:
@@ -116,7 +116,7 @@ steps:
         source: [selected_clinvar_submissions, select_clinvar_subs/clinvar_submissions]
         pickValue: first_non_null
       multianno_file: filter_vcf/filtered_multianno
-      autopvs1_file: filter_vcf/filtered_autopsv
+      autopvs1_file: filter_vcf/filtered_autopvs1
       intervar_file: filter_vcf/filtered_intervar
       output_basename: output_basename
       sample_id: sample_id
