@@ -30,7 +30,8 @@ arguments:
 inputs:
   vcf_file: { type: 'File', inputBinding: { position: 2, prefix: "--vcf" }, doc: "Input filtered and parsed VEP VCF file" }
   autogvp_file: { type: 'File', inputBinding: { position: 2, prefix: "--autogvp" }, doc: "input AutoGVP annotated file" }
-  colnames_file: { type: 'File', inputBinding: { position: 2, prefix: "--colnames" }, doc: "file listing output colnames" }
+  default_colnames_file: { type: 'File', inputBinding: { position: 2, prefix: "--default_colnames" }, doc: "file listing output colnames" }
+  custom_colnames_file: { type: 'File?', inputBinding: { position: 2, prefix: "--custom_colnames" }, doc: "file listing custom output colnames" }  
   csq_subfields: { type: 'File', doc: "VCF file CSQ field names" }
   output_basename: { type: 'string?', default: "test", inputBinding: { position: 2, prefix: "--output" }, doc: "String to use as base for output filenames" }
   cpu: { type: 'int?', default: 1, doc: "CPUs to allocate to this task" }

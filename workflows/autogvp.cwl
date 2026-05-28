@@ -27,7 +27,8 @@ doc: |
   intervar_file: InterVar results file
   autopvs1_file: AutoPVS1 results file
   multianno_file: ANNOVAR multianno file
-  output_colnames: File with column name information
+  output_colnames: File with default column name information
+  output_custom_colnames: File with custom column name information
   output_basename: String to use as the basename for stored outputs
   selected_clinvar_submissions: ClinVar variant file with conflicts resolved. If not provided, this file will be generated in the workflow
   variant_summary_file: ClinVar variant summary file
@@ -69,7 +70,8 @@ inputs:
   intervar_file: {type: 'File', doc: "InterVar results file"}
   autopvs1_file: {type: 'File', doc: "AutoPVS1 results file"}
   multianno_file: {type: 'File', doc: "ANNOVAR multianno file"}
-  output_colnames: {type: 'File', doc: "File with column name information."}
+  output_colnames: {type: 'File', doc: "File with default column name information."}
+  output_custom_colnames: {type: 'File?', doc: "File with custom column name information."}
   output_basename: {type: 'string?', default: "out", doc: "String to use as the basename for stored outputs."}
   sample_id: {type: 'string', doc: "Input sample bioassay id."}
   selected_clinvar_submissions: {type: 'File?', doc: "ClinVar variant file with conflicts resolved. If not provided, this file will
@@ -133,7 +135,8 @@ steps:
     in:
       vcf_file: parse_vcf/parsed_tsv
       autogvp_file: annotate/annotation_report
-      colnames_file: output_colnames
+      default_colnames_file: output_colnames
+      custom_colnames_file: output_custom_colnames
       csq_subfields: parse_vcf/csq_subfields_tsv
       output_basename: output_basename
       cpu: filter_annot_cpu
