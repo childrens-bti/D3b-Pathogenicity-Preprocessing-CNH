@@ -22,14 +22,13 @@ doc: |
   ## Inputs
 
   ```yaml
-  workflow: Indicate whether the input VCF is from a cavatica or custom workflow
   vcf_file: Input VCF file. Can be either VEP-annotated VCF file or or VEP- and ClinVar-annotated VCF file
   filter_criteria: Any additional VCF filtering criteria
-  clinvar_file: ClinVar file. Required for inputs from a custom workflow!
-  intevar_file: InterVar results file
-  autopsv1_file: AutoPVS1 results file
+  intervar_file: InterVar results file
+  autopvs1_file: AutoPVS1 results file
   multianno_file: ANNOVAR multianno file
-  output_colnames: File with column name information
+  output_colnames: File with default column name information
+  output_custom_colnames: File with custom column name information
   output_basename: String to use as the basename for stored outputs
   selected_clinvar_submissions: ClinVar variant file with conflicts resolved. If not provided, this file will be generated in the workflow
   variant_summary_file: ClinVar variant summary file
@@ -39,14 +38,13 @@ doc: |
   ```
 
   The following files can be obtained from the [AutoGVP GitHub data directory](https://github.com/diskin-lab-chop/AutoGVP/tree/main/data):
-  - `autopsv1_file`
+  - `autopvs1_file`
   - `concept_ids`
-  - `intevar_file`
+  - `intervar_file`
   - `multianno_file`
   - `output_colnames`
 
   Additionally, AutoGVP provides [a bash script](https://github.com/diskin-lab-chop/AutoGVP/blob/main/scripts/download_db_files.sh) to obtain:
-  - `clinvar_file`
   - `submission_summary_file`
   - `variant_summary_file`
 
@@ -59,7 +57,7 @@ doc: |
 
   ## Resources
 
-  Dockerfile: pgc-images.sbgenomics.com/diskin-lab/autogvp:v1.0.3
+  Dockerfile: pgc-images.sbgenomics.com/diskin-lab/autogvp:v1.0.6
   AutoGVP Paper: https://doi.org/10.1093/bioinformatics/btae114
   AutoGVP GitHub: https://github.com/diskin-lab-chop/AutoGVP
 requirements:
@@ -67,15 +65,13 @@ requirements:
 - class: StepInputExpressionRequirement
 - class: MultipleInputFeatureRequirement
 inputs:
-  workflow: {type: {type: enum, symbols: ["cavatica", "custom"], name: "workflow"}, doc: "Indicate whether the input VCF is from a
-      cavatica or custom workflow"}
   vcf_file: {type: 'File', doc: "Input VCF file. Can be either VEP-annotated VCF file or or VEP- and ClinVar-annotated VCF file"}
   filter_criteria: {type: 'string[]?', doc: "Any additional VCF filtering criteria"}
-  clinvar_file: {type: 'File?', doc: "ClinVar file. Required for inputs from a custom workflow!"}
-  intevar_file: {type: 'File', doc: "InterVar results file"}
-  autopsv1_file: {type: 'File', doc: "AutoPVS1 results file"}
+  intervar_file: {type: 'File', doc: "InterVar results file"}
+  autopvs1_file: {type: 'File', doc: "AutoPVS1 results file"}
   multianno_file: {type: 'File', doc: "ANNOVAR multianno file"}
-  output_colnames: {type: 'File', doc: "File with column name information."}
+  output_colnames: {type: 'File', doc: "File with default column name information."}
+  output_custom_colnames: {type: 'File?', doc: "File with custom column name information."}
   output_basename: {type: 'string?', default: "out", doc: "String to use as the basename for stored outputs."}
   sample_id: {type: 'string', doc: "Input sample bioassay id."}
   selected_clinvar_submissions: {type: 'File?', doc: "ClinVar variant file with conflicts resolved. If not provided, this file will
@@ -109,42 +105,21 @@ steps:
     in:
       vcf_file: vcf_file
       multianno_file: multianno_file
-      autopvs1_file: autopsv1_file
-      intervar_file: intevar_file
+      autopvs1_file: autopvs1_file
+      intervar_file: intervar_file
       output_basename: output_basename
       filter_criteria: filter_criteria
-    out: [filtered_vcf, filtered_multianno, filtered_autopsv, filtered_intervar]
-  annotate_cavatica:
+    out: [filtered_vcf, filtered_multianno, filtered_autopvs1, filtered_intervar]
+  annotate:
     run: ../tools/autogvp_annotate_cavatica.cwl
-    when: $(inputs.workflow == "cavatica")
     in:
-      workflow: workflow
       vcf_file: filter_vcf/filtered_vcf
-      clinvar_file: clinvar_file
-      multianno_file: filter_vcf/filtered_multianno
-      autopvs1_file: filter_vcf/filtered_autopsv
-      intervar_file: filter_vcf/filtered_intervar
-      variant_summary:
+      clinvar_file:
         source: [selected_clinvar_submissions, select_clinvar_subs/clinvar_submissions]
         pickValue: first_non_null
-      output_basename: output_basename
-      sample_id: sample_id
-      cpu: annotate_cpu
-      ram: annotate_ram
-    out: [annotation_report]
-  annotate_custom:
-    run: ../tools/autogvp_annotate_custom.cwl
-    when: $(inputs.workflow == "custom")
-    in:
-      workflow: workflow
-      vcf_file: filter_vcf/filtered_vcf
-      clinvar_file: clinvar_file
       multianno_file: filter_vcf/filtered_multianno
-      autopvs1_file: filter_vcf/filtered_autopsv
+      autopvs1_file: filter_vcf/filtered_autopvs1
       intervar_file: filter_vcf/filtered_intervar
-      variant_summary:
-        source: [selected_clinvar_submissions, select_clinvar_subs/clinvar_submissions]
-        pickValue: first_non_null
       output_basename: output_basename
       sample_id: sample_id
       cpu: annotate_cpu
@@ -159,10 +134,9 @@ steps:
     run: ../tools/autogvp_filter_annotations.cwl
     in:
       vcf_file: parse_vcf/parsed_tsv
-      autogvp_file:
-        source: [annotate_cavatica/annotation_report, annotate_custom/annotation_report]
-        pickValue: the_only_non_null
-      colnames_file: output_colnames
+      autogvp_file: annotate/annotation_report
+      default_colnames_file: output_colnames
+      custom_colnames_file: output_custom_colnames
       csq_subfields: parse_vcf/csq_subfields_tsv
       output_basename: output_basename
       cpu: filter_annot_cpu
