@@ -75,10 +75,14 @@ inputs:
   output_basename: {type: 'string?', default: "out", doc: "String to use as the basename for stored outputs."}
   sample_id: {type: 'string', doc: "Input sample bioassay id."}
   selected_clinvar_submissions: {type: 'File?', doc: "ClinVar variant file with conflicts resolved. If not provided, this file will
-      be generated in the workflow"}
-  variant_summary_file: {type: 'File?', doc: "ClinVar variant summary file"}
-  submission_summary_file: {type: 'File?', doc: "ClinVar submission summary file"}
-  concept_ids: {type: 'File?', doc: "File containing list of conceptIDs to prioritize submissions for ClinVar variant conflict resolution"}
+      be generated in the workflow", "sbg:suggestedValue": {class: File,
+      path: 6a29cc70b729272b1d16e328, name: resolved-clinvar-2026-06-cancer-latest.tsv}}
+  variant_summary_file: {type: 'File?', doc: "ClinVar variant summary file", "sbg:suggestedValue": {class: File,
+      path: 6a21b0c945eadc53bf786cf3, name: variant_summary_2026-06.txt.gz}}
+  submission_summary_file: {type: 'File?', doc: "ClinVar submission summary file", "sbg:suggestedValue": {class: File,
+      path: 6a21b0c945eadc53bf786cf4, name: submission_summary_2026-06.txt.gz}}
+  concept_ids: {type: 'File?', doc: "File containing list of conceptIDs to prioritize submissions for ClinVar variant conflict resolution",
+      "sbg:suggestedValue": {class: File, path: 6a21b0c945eadc53bf786cf5, name: clinvar_cancer_concept_ids_20260130.txt}}
   conflict_res: {type: ['null', {type: enum, symbols: ["latest", "most_severe"], name: "conflict_resolution"}], doc: "How to resolve
       conflicts associated with conceptIDs: latest or most_severe"}
   annotate_cpu: { type: 'int?', default: 1, doc: "CPUs to allocate to AutoGVP annotation" }
