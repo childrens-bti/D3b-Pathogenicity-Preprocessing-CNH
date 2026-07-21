@@ -27,7 +27,6 @@ doc: |
   intervar_file: InterVar results file
   autopvs1_file: AutoPVS1 results file
   multianno_file: ANNOVAR multianno file
-  output_colnames: File with default column name information
   output_custom_colnames: File with custom column name information
   output_basename: String to use as the basename for stored outputs
   selected_clinvar_submissions: ClinVar variant file with conflicts resolved. If not provided, this file will be generated in the workflow
@@ -138,7 +137,6 @@ steps:
     in:
       vcf_file: parse_vcf/parsed_tsv
       autogvp_file: annotate/annotation_report
-      default_colnames_file: output_colnames
       custom_colnames_file: output_custom_colnames
       csq_subfields: parse_vcf/csq_subfields_tsv
       output_basename: output_basename
