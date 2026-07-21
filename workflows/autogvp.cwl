@@ -70,7 +70,6 @@ inputs:
   intervar_file: {type: 'File', doc: "InterVar results file"}
   autopvs1_file: {type: 'File', doc: "AutoPVS1 results file"}
   multianno_file: {type: 'File', doc: "ANNOVAR multianno file"}
-  output_colnames: {type: 'File', doc: "File with default column name information."}
   output_custom_colnames: {type: 'File?', doc: "File with custom column name information."}
   output_basename: {type: 'string?', default: "out", doc: "String to use as the basename for stored outputs."}
   sample_id: {type: 'string', doc: "Input sample bioassay id."}
