@@ -56,7 +56,7 @@ doc: |
 
   ## Resources
 
-  Dockerfile: pgc-images.sbgenomics.com/diskin-lab/autogvp:v2.0.0
+  Dockerfile: pgc-images.sbgenomics.com/diskin-lab/autogvp:v2.0.1
   AutoGVP Paper: https://doi.org/10.1093/bioinformatics/btae114
   AutoGVP GitHub: https://github.com/diskin-lab-chop/AutoGVP
 requirements:
