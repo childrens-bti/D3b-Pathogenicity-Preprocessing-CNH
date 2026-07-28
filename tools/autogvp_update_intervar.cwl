@@ -17,7 +17,7 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      Rscript /rocker-build/AutoGVP/scripts/update_intervar.R
+      Rscript /rocker-build/AutoGVP/scripts/update_intervar.R --outdir .
 
 inputs:
   intervar_file: { type: 'File', inputBinding: { position: 2, prefix: "--intervar_file" }, doc: "intervar results file" }
