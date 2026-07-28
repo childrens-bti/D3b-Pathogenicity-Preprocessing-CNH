@@ -115,7 +115,7 @@ steps:
       filter_criteria: filter_criteria
     out: [filtered_vcf, filtered_multianno, filtered_autopvs1, filtered_intervar]
   update_intervar:
-    run: ../tools/update_intervar.cwl
+    run: ../tools/autogvp_update_intervar.cwl
     in:
       intervar_file: filter_vcf/filtered_intervar
       clinvar_file:
