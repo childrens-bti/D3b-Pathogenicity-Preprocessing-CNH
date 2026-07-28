@@ -20,9 +20,8 @@ arguments:
       bash /rocker-build/AutoGVP/scripts/update_intervar.R
 
 inputs:
-  vcf_file: { type: 'File', inputBinding: { position: 3 }, doc: "VCF file to filter" }
-  multianno_file: { type: 'File', inputBinding: { position: 4 }, doc: "multianno file" }
-  autopvs1_file: { type: 'File', inputBinding: { position: 5 }, doc: "autopvs1 results file" }
-  intervar_file: { type: 'File', inputBinding: { position: 6 }, doc: "intervar results file" }
+  intervar_file: { type: 'File', inputBinding: { position: 2, prefix: "--intervar_file" }, doc: "intervar results file" }
+  clinvar_file: { type: 'File', inputBinding: { position: 2, prefix: "--clinvar_file" }, doc: "ClinVar resolved clinical significance file (format: resolved-clinvar-interpretations.tsv)" }
+  clinvar_hgvs4_file: { type: 'File', inputBinding: { position: 2, prefix: "--clinvar_hgvs4_file" }, doc: "ClinVar hgvs4 file with amino acid changes" }
 outputs:
   updated_intervar: { type: File, outputBinding: { glob: '*updated*' }}
